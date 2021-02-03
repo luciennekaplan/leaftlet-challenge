@@ -19,25 +19,14 @@ function findRadius(magnitude) {
     return magnitude * 2.5;
 }
 
-function findColor(depth) {
-    if(depth <=10) {
-        return "#00cc00"; 
-    }
-    else if(depth >10 && depth <=30) {
-        return "#ffff00"; 
-    }
-    else if (depth >30 && depth <=50) {
-        return "#ffcc00"; 
-    }
-    else if (depth >50 && depth <=70) {
-        return "#ff9900";
-    }
-    else if (depth >70 && depth <=90) {
-        return "#ff6600"; 
-    }
-    else if (depth >90) {
-        return "#ff0000";
-     }
+function findColor(d) {
+    return d > 90 ? '#ff0000' :
+            d > 70  ? "#ff6600":
+            d > 50  ? "#ff9900" :
+            d > 30  ? "#ffcc00" :
+            d > 10   ? "#ffff00" :
+            d > -10   ? "#00cc00" :
+                        "990033";
     }
 
 d3.json(url).then(function(data) {
