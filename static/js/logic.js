@@ -19,6 +19,27 @@ function findRadius(magnitude) {
     return magnitude * 2.5;
 }
 
+function findColor(depth) {
+    if(depth <=10) {
+        return "#00cc00"; 
+    }
+    else if(depth >10 && depth <=30) {
+        return "#ffff00"; 
+    }
+    else if (depth >30 && depth <=50) {
+        return "#ffcc00"; 
+    }
+    else if (depth >50 && depth <=70) {
+        return "#ff9900";
+    }
+    else if (depth >70 && depth <=90) {
+        return "#ff6600"; 
+    }
+    else {
+        return "#ff0000";
+     }
+    }
+
 d3.json(url).then(function(data) {
     console.log(data);
     L.geoJson(data, {
@@ -26,7 +47,7 @@ d3.json(url).then(function(data) {
           return new L.CircleMarker(latlng, {
             radius: findRadius(feature.properties.mag),
             color: 'black',
-            fillColor: "green",
+            fillColor: findColor(feature.geometry.coordinates[2]),
             stroke: false,
             fillOpacity: 0.75
           });
