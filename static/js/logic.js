@@ -1,6 +1,7 @@
-
+// API
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
 
+// 
 var myMap = L.map("mapid", {
     center: [40.7608, -111.8910],
     zoom: 5,
@@ -60,7 +61,7 @@ d3.json(url).then(function(data) {
               },
               // Show pop-up when feature is clicked on
               click: function(event) {
-                layer.bindPopup("<h1>" + feature.properties.place+ "</h1> <hr> <h2>" + feature.properties.mag + "</h2>");
+                layer.bindPopup("<h3>" + `Location: ${feature.properties.place}`+ "</h3><h3>" + `Magnitude: ${feature.properties.mag}` + "</h3>");
               }
             });
           }
