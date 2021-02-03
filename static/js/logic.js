@@ -16,7 +16,7 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     }).addTo(myMap);
 
 function findRadius(magnitude) {
-    return magnitude * 2.5;
+    return magnitude * 4;
 }
 
 function findColor(d) {
@@ -38,9 +38,33 @@ d3.json(url).then(function(data) {
             color: 'black',
             fillColor: findColor(feature.geometry.coordinates[2]),
             stroke: false,
-            fillOpacity: 0.75
+            fillOpacity: 0.5
           });
         },
+        onEachFeature: function(feature, layer) {
+            // Set mouse events to change map styling
+            layer.on({
+              // Change opacity of location when hovered over
+              mouseover: function(event) {
+                layer = event.target;
+                layer.setStyle({
+                  fillOpacity: 0.9
+                });
+              },
+              // Change opacity back to original state when no longer hovering over location
+              mouseout: function(event) {
+                layer = event.target;
+                layer.setStyle({
+                  fillOpacity: 0.5
+                });
+              },
+              // Show pop-up when feature is clicked on
+              click: function(event) {
+                layer.bindPopup("<h1>" + feature.properties.place+ "</h1> <hr> <h2>" + feature.properties.mag + "</h2>");
+              }
+            });
+          }
+      
       }).addTo(myMap);
 });
 
