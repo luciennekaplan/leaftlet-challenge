@@ -35,7 +35,7 @@ function findColor(depth) {
     else if (depth >70 && depth <=90) {
         return "#ff6600"; 
     }
-    else {
+    else if (depth >90) {
         return "#ff0000";
      }
     }
@@ -54,3 +54,22 @@ d3.json(url).then(function(data) {
         },
       }).addTo(myMap);
 });
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        depths = [-10, 10, 30, 50, 70, 90],
+        labels = [];
+
+    for (var i = 0; i < depths.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + findColor(depths[i] + 1) + '"></i> ' +
+            depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(myMap);
