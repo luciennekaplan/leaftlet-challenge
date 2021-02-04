@@ -1,5 +1,6 @@
 // API
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
+var url2 = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json"
 
 var myMap = L.map("mapid", {
     center: [40.7608, -111.8910],
@@ -64,12 +65,24 @@ function findColor(d) {
                         "990033";
     }
 
-d3.json(url).then(function(data) {
-  
-  L.control.layers(baseMaps, null, {
+d3.json(url2).then(function(data) {
+  var myStyle = {
+    "color": "#0099cc",
+    "weight": 2,
+    "opacity": 0.65
+  };
+  var plateLayer = L.geoJson(data, {
+    style: myStyle
+  });
+  var overlayMaps = {
+    "Tectonic Plates": plateLayer 
+  }
+  L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
-    
+});
+
+d3.json(url).then(function(data) {   
   console.log(data);
     L.geoJson(data, {
         pointToLayer: function(feature, latlng) {
