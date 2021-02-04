@@ -50,11 +50,6 @@ var baseMaps = {
   "Outdoor Map": outdoorsmap
 };
 
-
-L.control.layers(baseMaps, null, {
-  collapsed: false
-}).addTo(myMap);
-
 function findRadius(magnitude) {
     return magnitude * 4;
 }
@@ -70,7 +65,12 @@ function findColor(d) {
     }
 
 d3.json(url).then(function(data) {
-    console.log(data);
+  
+  L.control.layers(baseMaps, null, {
+    collapsed: false
+  }).addTo(myMap);
+    
+  console.log(data);
     L.geoJson(data, {
         pointToLayer: function(feature, latlng) {
           return new L.CircleMarker(latlng, {
@@ -101,7 +101,7 @@ d3.json(url).then(function(data) {
               },
               // Show pop-up when feature is clicked on
               click: function(event) {
-                layer.bindPopup("<h3>" + `Recorded location: ${feature.properties.place}`+ "</h3><h3>" + `Magnitude: ${feature.properties.mag}` + "</h3>");
+                layer.bindPopup("<h3>" + `Location: ${feature.properties.place}`+ "</h3><h3>" + `Magnitude: ${feature.properties.mag}` + "</h3><h3>" + `Depth: ${feature.geometry.coordinates[2]}` + "</h3>");
               }
             });
           }
@@ -114,9 +114,8 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        depths = [-10, 10, 30, 50, 70, 90],
-        labels = [];
-
+        depths = [-10, 10, 30, 50, 70, 90];
+    div.innerHTML += ('<strong>Earthquake Depth</strong><br>')
     for (var i = 0; i < depths.length; i++) {
         div.innerHTML +=
             '<i style="background:' + findColor(depths[i] + 1) + '"></i> ' +
