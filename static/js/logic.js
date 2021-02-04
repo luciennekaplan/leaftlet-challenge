@@ -14,7 +14,7 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/
     maxZoom: 18,
     zoomOffset: -1,
     id: "mapbox/light-v10",
-    accessToken: "pk.eyJ1IjoibHVjaWVubmVrYXBsYW4iLCJhIjoiY2trOHowdGN3MHNyODJ5bnRmbmg5b2t0dyJ9.46ciJtDd5-UKUy6rTirCgA",
+    accessToken: API_KEY,
 });
 
 var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -23,7 +23,7 @@ var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{
   maxZoom: 18,
   zoomOffset: -1,
   id: "mapbox/dark-v10",
-  accessToken: "pk.eyJ1IjoibHVjaWVubmVrYXBsYW4iLCJhIjoiY2trOHowdGN3MHNyODJ5bnRmbmg5b2t0dyJ9.46ciJtDd5-UKUy6rTirCgA",
+  accessToken: API_KEY,
 }).addTo(myMap);
 
 var satellitemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -96,26 +96,20 @@ d3.json(url).then(function(data) {
         },
         
         onEachFeature: function(feature, layer) {
-            // Set mouse events to change map styling
+            layer.bindPopup("<h3>" + `Location: ${feature.properties.place}`+ "</h3><h3>" + `Magnitude: ${feature.properties.mag}` + "</h3><h3>" + `Depth: ${feature.geometry.coordinates[2]}` + "</h3>");
             layer.on({
-              // Change opacity of location when hovered over
               mouseover: function(event) {
                 layer = event.target;
                 layer.setStyle({
                   fillOpacity: 0.9
                 });
               },
-              // Change opacity back to original state when no longer hovering over location
               mouseout: function(event) {
                 layer = event.target;
                 layer.setStyle({
                   fillOpacity: 0.5
                 });
               },
-              // Show pop-up when feature is clicked on
-              click: function(event) {
-                layer.bindPopup("<h3>" + `Location: ${feature.properties.place}`+ "</h3><h3>" + `Magnitude: ${feature.properties.mag}` + "</h3><h3>" + `Depth: ${feature.geometry.coordinates[2]}` + "</h3>");
-              }
             });
           }
       
